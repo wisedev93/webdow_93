@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>imgMaker - OpenCV.js</title>
+    <link rel="stylesheet" href="imgMaker.css" />
+  </head>
+  <body>
+    <h1>imgMaker</h1>
+
+    <div class="controls">
+      <input id="file" type="file" accept="image/*" />
+      <button id="processBtn" disabled>처리 실행</button>
+      <span class="label"
+        >중앙 크기: <strong id="centerSizeLabel">300</strong>px</span
+      >
+    </div>
+
+    <div class="controls">
+      <button id="downloadCenterBtn" disabled>중앙 다운로드</button>
+      <button id="downloadTopBtn" disabled>상단 다운로드</button>
+      <button id="downloadBottomBtn" disabled>하단 다운로드</button>
+      <button id="downloadLeftBtn" disabled>좌측 다운로드</button>
+      <button id="downloadRightBtn" disabled>우측 다운로드</button>
+      <button id="downloadAllBtn" disabled>모두 다운로드</button>
+    </div>
+
+    <div class="wrap">
+      <div class="card">
+        <div class="label">원본 (정사각 보정됨)</div>
+        <canvas id="srcCanvas" width="300" height="300"></canvas>
+        <div class="notice">
+          원본이 300px 미만이면 600px 정사각으로 업스케일됩니다.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="label">중앙</div>
+        <canvas id="centerCanvas" width="300" height="300"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="label">상단</div>
+        <canvas id="topCanvas" width="300" height="300"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="label">좌측</div>
+        <canvas id="leftCanvas" width="300" height="300"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="label">하단</div>
+        <canvas id="bottomCanvas" width="300" height="300"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="label">우측</div>
+        <canvas id="rightCanvas" width="300" height="300"></canvas>
+      </div>
+    </div>
+
+    <p class="notice">
+      참고: 이 데모는 OpenCV.js의 <code>getPerspectiveTransform</code> +
+      <code>warpPerspective</code>를 사용합니다.
+    </p>
+
+    <!-- OpenCV.js (CDN) -->
+    <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+
+    <script src="imgMaker.js"></script>
+  </body>
+</html>
