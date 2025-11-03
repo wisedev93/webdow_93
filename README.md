@@ -1,3 +1,3 @@
-# window_93
+# webdow_93
 
-digital window via optical illusion
+web window via optical illusion

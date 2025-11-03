@@ -10,6 +10,7 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
+  background-color: black;
 }
 
 .td-img {
@@ -33,22 +34,24 @@ body {
 
 .frame.center {
   transform: rotateY(180deg) scaleX(-1) translateZ(150px);
+  border: 1px solid white;
 }
+
 .frame.right {
   transform: rotateY(90deg) scaleX(-1) translateZ(150px);
-  border: 1px solid black;
+  border: 1px solid white;
 }
 .frame.left {
   transform: rotateY(-90deg) scaleX(-1) translateZ(150px);
-  border: 1px solid black;
+  border: 1px solid white;
 }
 .frame.top {
   transform: rotateX(90deg) scaleY(-1) translateZ(150px);
-  border: 1px solid black;
+  border: 1px solid white;
 }
 .frame.bottom {
   transform: rotateX(-90deg) scaleY(-1) translateZ(150px);
-  border: 1px solid black;
+  border: 1px solid white;
 }
 
 .frame img {
@@ -56,4 +59,13 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.main-frame img {
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
