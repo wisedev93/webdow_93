@@ -1,16 +1,16 @@
-var tdImg = document.querySelector(".td-img");
+var webdow = document.querySelector(".webdow");
 var originX = 50;
 var originY = 50;
 
 function updatePerspectiveOrigin() {
-  tdImg.style.perspectiveOrigin = originX + "% " + originY + "%";
+  webdow.style.perspectiveOrigin = originX + "% " + originY + "%";
 }
 
 // perspective with mouse wheel on tdImg (min: 100px, max: 1000px)
 var currentPerspective = (function () {
   var v =
-    tdImg &&
-    (tdImg.style.perspective || window.getComputedStyle(tdImg).perspective);
+    webdow &&
+    (webdow.style.perspective || window.getComputedStyle(webdow).perspective);
   if (!v || v === "none") return 900;
   var n = parseFloat(v);
   return isNaN(n) ? 900 : n;
@@ -23,19 +23,19 @@ function perspectiveClamp(v) {
 }
 
 function applyPerspective() {
-  if (!tdImg) return;
+  if (!webdow) return;
   if (currentPerspective >= 1000) {
-    tdImg.style.perspective = "none";
+    webdow.style.perspective = "none";
   } else {
-    tdImg.style.perspective = currentPerspective + "px";
+    webdow.style.perspective = currentPerspective + "px";
   }
 }
 
 applyPerspective();
 
 // listen wheel only inside tdImg
-if (tdImg) {
-  tdImg.addEventListener(
+if (webdow) {
+  webdow.addEventListener(
     "wheel",
     function (e) {
       // wheel up (deltaY < 0): +, wheel down: -
@@ -71,8 +71,8 @@ document.addEventListener("mousemove", function (e) {
     clearTimeout(transitionCleanupTimer);
     transitionCleanupTimer = null;
   }
-  if (tdImg && tdImg.style.transition !== "none") {
-    tdImg.style.transition = "none";
+  if (webdow && webdow.style.transition !== "none") {
+    webdow.style.transition = "none";
   }
   if (lastMouseX === null || lastMouseY === null) {
     lastMouseX = e.clientX;
@@ -80,7 +80,7 @@ document.addEventListener("mousemove", function (e) {
     // start/reset inactivity timer on first movement
     if (inactivityTimer) clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(function () {
-      if (tdImg)
+      if (webdow)
         tdImg.style.transition =
           "perspective-origin " + resetDurationMs + "ms ease";
       originX = 50;
@@ -88,7 +88,7 @@ document.addEventListener("mousemove", function (e) {
       updatePerspectiveOrigin();
       // remove transition after animation completes
       transitionCleanupTimer = setTimeout(function () {
-        if (tdImg) tdImg.style.transition = "none";
+        if (webdow) webdow.style.transition = "none";
         transitionCleanupTimer = null;
       }, resetDurationMs);
     }, 3000);
@@ -104,7 +104,7 @@ document.addEventListener("mousemove", function (e) {
   // reset inactivity timer on every movement
   if (inactivityTimer) clearTimeout(inactivityTimer);
   inactivityTimer = setTimeout(function () {
-    if (tdImg)
+    if (webdow)
       tdImg.style.transition =
         "perspective-origin " + resetDurationMs + "ms ease";
     originX = 50;
@@ -112,7 +112,7 @@ document.addEventListener("mousemove", function (e) {
     updatePerspectiveOrigin();
     // remove transition after animation completes
     transitionCleanupTimer = setTimeout(function () {
-      if (tdImg) tdImg.style.transition = "none";
+      if (webdow) webdow.style.transition = "none";
       transitionCleanupTimer = null;
     }, resetDurationMs);
   }, 3000);
