@@ -1,6 +1,4 @@
 var tdImg = document.querySelector(".td-img");
-var mainFrame = document.querySelector(".main-frame");
-var frontFrame = document.querySelector(".frame.center.front");
 var originX = 50;
 var originY = 50;
 
@@ -13,13 +11,13 @@ var currentPerspective = (function () {
   var v =
     tdImg &&
     (tdImg.style.perspective || window.getComputedStyle(tdImg).perspective);
-  if (!v || v === "none") return 400;
+  if (!v || v === "none") return 900;
   var n = parseFloat(v);
-  return isNaN(n) ? 400 : n;
+  return isNaN(n) ? 900 : n;
 })();
 
 function perspectiveClamp(v) {
-  if (v < 100) return 100;
+  if (v < 900) return 900;
   if (v > 1000) return 1000;
   return v;
 }

@@ -10,7 +10,6 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background-color: red;
 }
 
 .td-img {
@@ -33,28 +32,23 @@ body {
 }
 
 .frame.center {
-  background-color: transparent;
   transform: rotateY(180deg) scaleX(-1) translateZ(150px);
 }
 .frame.right {
-  background-color: black;
   transform: rotateY(90deg) scaleX(-1) translateZ(150px);
-  border: 1px solid white;
+  border: 1px solid black;
 }
 .frame.left {
-  background-color: black;
   transform: rotateY(-90deg) scaleX(-1) translateZ(150px);
-  border: 1px solid white;
+  border: 1px solid black;
 }
 .frame.top {
-  background-color: black;
   transform: rotateX(90deg) scaleY(-1) translateZ(150px);
-  border: 1px solid white;
+  border: 1px solid black;
 }
 .frame.bottom {
-  background-color: black;
   transform: rotateX(-90deg) scaleY(-1) translateZ(150px);
-  border: 1px solid white;
+  border: 1px solid black;
 }
 
 .frame img {
