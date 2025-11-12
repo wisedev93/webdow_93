@@ -3,28 +3,43 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
     <title>webdow 93</title>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="./webdow.js" defer></script>
     <link rel="stylesheet" href="./webdow.css" />
   </head>
   <body>
-    <div class="webdow">
-      <div class="main-frame">
-        <img src="../assets/window_93.jpg" alt="window_93" />
-        <div class="frame center"></div>
-        <div class="frame right">
-          <!-- <img src="../assets/right.png" alt="right" /> -->
-        </div>
-        <div class="frame left">
-          <!-- <img src="../assets/left.png" alt="left" /> -->
-        </div>
-        <div class="frame top">
-          <!-- <img src="../assets/top.png" alt="top" /> -->
-        </div>
-        <div class="frame bottom">
-          <!-- <img src="../assets/bottom.png" alt="bottom" /> -->
-        </div>
-      </div>
+    <video id="video" class="video-input" autoplay playsinline></video>
+    <canvas id="canvas" class="canvas-overlay"></canvas>
+    <div id="direction-display" class="direction-display"></div>
+    <div id="webdow">
+      <!-- <img id="webdow-image" src="../assets/window_93.jpg" alt="webdow" /> -->
+      <iframe
+        id="webdow-video"
+        width="934px"
+        height="534px"
+        src="https://www.youtube.com/embed/D1lNjuUj2c8?autoplay=0&mute=0&controls=1&rel=0&modestbranding=1&enablejsapi=1"
+        title="webdow-video"
+        frameborder="0"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
     </div>
   </body>
 </html>
