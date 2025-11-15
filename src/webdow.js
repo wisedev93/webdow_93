@@ -62,7 +62,7 @@ function calculateRequiredContentSize() {
 
 // 오프셋 히스토리: 최근 N개 프레임의 오프셋을 저장하여 노이즈 제거
 var offsetHistory = [];
-var HISTORY_SIZE = 5; // 최근 5개 프레임의 결과를 평균내어 사용
+var HISTORY_SIZE = 15; // 최근 15개 프레임의 결과를 평균내어 사용 (더 부드럽게)
 
 var FACE_LANDMARKS = {
   LEFT_EYE: 33,
@@ -137,16 +137,20 @@ function smoothOffset(offset) {
     return offset;
   }
 
-  // 히스토리의 평균값 계산
+  // 히스토리의 가중 평균값 계산 (최근 프레임에 더 많은 가중치)
   var sumX = 0;
   var sumY = 0;
+  var totalWeight = 0;
   for (var i = 0; i < offsetHistory.length; i++) {
-    sumX += offsetHistory[i].x;
-    sumY += offsetHistory[i].y;
+    // 최근 프레임일수록 더 높은 가중치 (선형 가중치)
+    var weight = i + 1; // 첫 번째는 1, 마지막은 offsetHistory.length
+    sumX += offsetHistory[i].x * weight;
+    sumY += offsetHistory[i].y * weight;
+    totalWeight += weight;
   }
 
-  var smoothedX = sumX / offsetHistory.length;
-  var smoothedY = sumY / offsetHistory.length;
+  var smoothedX = sumX / totalWeight;
+  var smoothedY = sumY / totalWeight;
 
   return { x: smoothedX, y: smoothedY };
 }
