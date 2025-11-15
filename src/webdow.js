@@ -15,9 +15,6 @@ var webdowContainer = document.getElementById("webdow");
 // 웹도우 비디오: 방향에 따라 움직이는 비디오 요소
 var webdowContent = document.getElementById("webdow-video");
 
-// ============================================
-// 전역 변수
-// ============================================
 // Face Mesh 객체: MediaPipe Face Mesh 인스턴스
 var faceMesh = null;
 // Camera 객체: MediaPipe Camera 유틸리티 인스턴스
@@ -27,8 +24,9 @@ var camera = null;
 var currentOffset = { x: 0.5, y: 0.5 };
 
 // 이미지 이동 비율: 얼굴 오프셋 1.0당 이미지가 이동할 픽셀 수
-// 값이 클수록 더 많이 움직임
 var CONTENT_MOVE_SCALE = 200; // 오프셋 1.0당 200px 이동
+// X축 이동 보정 계수: 좌우 움직임을 상하 움직임과 비슷하게 만들기 위한 계수
+var CONTENT_MOVE_SCALE_X = 1.5; // X축 이동량을 1.5배로 증가 (상하와 비슷하게)
 
 /**
  * - offset 범위: 0.0 ~ 1.0
@@ -175,7 +173,9 @@ function updateContentPositionFromOffset(offset) {
   // 오프셋을 픽셀 단위로 변환 (방향 반대로)
   // 얼굴이 왼쪽으로 가면 이미지도 왼쪽으로 가야 하므로 부호 반전
   // 얼굴이 위로 가면 이미지도 위로 가야 하므로 부호 반전
-  var translateX = -offsetFromCenterX * CONTENT_MOVE_SCALE;
+  // X축 이동량에 보정 계수를 적용하여 좌우 움직임을 상하와 비슷하게 조정
+  var translateX =
+    -offsetFromCenterX * CONTENT_MOVE_SCALE * CONTENT_MOVE_SCALE_X;
   var translateY = -offsetFromCenterY * CONTENT_MOVE_SCALE;
 
   // transform 속성 업데이트
@@ -258,33 +258,41 @@ function initializeFaceMesh() {
   faceMesh.onResults(onFaceMeshResults);
 }
 
-// ============================================
-// 얼굴 감지 결과 처리 함수
-// ============================================
 /**
- * MediaPipe가 얼굴을 감지했을 때 호출되는 콜백 함수
- *
  * @param {Object} results - MediaPipe가 반환한 감지 결과
  *   - results.image: 원본 비디오 프레임
  *   - results.multiFaceLandmarks: 감지된 얼굴들의 랜드마크 배열
- *
- * 이 함수는 매 프레임마다 호출되므로 실시간으로 얼굴 방향을 추적할 수 있음
  */
 function onFaceMeshResults(results) {
-  // 캔버스에 그리기 시작 (현재는 사용하지 않지만 향후 확장 가능)
+  // 캔버스에 그리기 시작
   ctx.save();
   // 이전 프레임 지우기
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // 원본 비디오 프레임 그리기 (디버깅용, 현재는 보이지 않음)
+  // 원본 비디오 프레임 그리기
   ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
 
-  // ============================================
-  // 얼굴 감지 여부 확인
-  // ============================================
   // multiFaceLandmarks가 있고, 배열에 얼굴이 하나 이상 있으면
   if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
     // 첫 번째 얼굴의 랜드마크 가져오기 (maxNumFaces=1이므로 항상 첫 번째만)
     var landmarks = results.multiFaceLandmarks[0];
+
+    // 얼굴 메시 그리기 (MediaPipe drawing_utils 사용)
+    if (
+      typeof drawConnectors !== "undefined" &&
+      typeof drawLandmarks !== "undefined"
+    ) {
+      // 얼굴 윤곽선 그리기
+      drawConnectors(ctx, landmarks, FACEMESH_TESSELATION, {
+        color: "#C0C0C070",
+        lineWidth: 1,
+      });
+      // 얼굴 랜드마크 점 그리기
+      drawLandmarks(ctx, landmarks, {
+        color: "#FF3030",
+        lineWidth: 1,
+        radius: 1,
+      });
+    }
 
     // 얼굴 오프셋 계산
     var offset = calculateFaceOffset(landmarks);
@@ -304,13 +312,7 @@ function onFaceMeshResults(results) {
   ctx.restore();
 }
 
-// ============================================
-// 카메라 초기화 함수
-// ============================================
 /**
- * 웹캠 스트림을 가져와서 비디오 요소에 연결하고,
- * MediaPipe Camera 유틸리티를 사용하여 실시간으로 얼굴 감지를 시작
- *
  * MediaPipe Camera 유틸리티는:
  * - 웹캠 스트림을 자동으로 관리
  * - 매 프레임마다 onFrame 콜백 호출
@@ -340,8 +342,8 @@ function initializeCamera() {
 }
 
 function init() {
-  canvas.width = 640;
-  canvas.height = 480;
+  canvas.width = 320;
+  canvas.height = 240;
 
   var webdowVideo = document.getElementById("webdow-video");
   if (webdowVideo) {
